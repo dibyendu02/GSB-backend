@@ -2,6 +2,7 @@ const cloudinary = require("cloudinary").v2; // Add this line
 const {
   verifyTokenandAuthorization,
   verifyTokenandAdmin,
+  verifyToken,
 } = require("../middlewares/verifyToken");
 const User = require("../models/User");
 const { singleUpload } = require("../middlewares/multer");
@@ -84,6 +85,16 @@ router.get("/find/:id", verifyTokenandAuthorization, async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//get all users
+router.get("/", verifyToken, async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
   } catch (err) {
     res.status(500).json(err);
   }

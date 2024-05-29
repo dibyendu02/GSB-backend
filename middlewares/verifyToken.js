@@ -32,7 +32,7 @@ const verifyTokenandAdmin = (req, res, next) => {
     if (req.user.isAdmin) {
       next();
     } else {
-      res.status(403).json("You're not allowed to do that");
+      res.status(403).json("You're not allowed to do that, be an admin");
     }
   });
 };
