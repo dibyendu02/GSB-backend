@@ -19,6 +19,8 @@ const OrderSchema = new mongoose.Schema(
     reciverPhoneNumber: { type: String },
     address: { type: Object },
     status: { type: String, default: "pending" },
+    paymentMethod: { type: String, default: "cod" },
+    paymentStatus: { type: String, default: "pending" },
   },
   { timestamps: true }
 );
