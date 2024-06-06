@@ -55,6 +55,18 @@ router.get("/", verifyToken, async (req, res) => {
   }
 });
 
+//route to get user specific
+// Route to get success stories by userId
+router.get("/:userId", verifyToken, async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const userStories = await Story.find({ userId: userId });
+    res.status(200).json(userStories);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // Route to update a story by ID
 router.put("/:id", verifyTokenandAdmin, async (req, res) => {
   try {
