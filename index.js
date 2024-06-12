@@ -11,6 +11,8 @@ const supplementRoute = require("./routes/supplement");
 const storyRoute = require("./routes/story");
 const orderRoute = require("./routes/order");
 const cartRoute = require("./routes/cart");
+const contentVideoRoute = require("./routes/contentVideo");
+
 const cloudinary = require("cloudinary");
 
 //select port
@@ -45,6 +47,7 @@ app.use("/api/supplement", supplementRoute);
 app.use("/api/story", storyRoute);
 app.use("/api/order", orderRoute);
 app.use("/api/cart", cartRoute);
+app.use("/api/contentVideo", contentVideoRoute);
 
 app.listen(PORT, () => {
   console.log(`app running on port ${PORT}`);
