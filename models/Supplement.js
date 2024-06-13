@@ -2,7 +2,10 @@ const mongoose = require("mongoose");
 
 const SupplementSchema = new mongoose.Schema(
   {
-    productImg: { type: String },
+    productImg: {
+      public_id: { type: String },
+      secure_url: { type: String },
+    },
     name: { type: String, required: true },
     price: { type: Number, required: true },
   },

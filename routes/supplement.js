@@ -5,10 +5,28 @@ const {
   verifyTokenandAdmin,
 } = require("../middlewares/verifyToken");
 const Supplement = require("../models/Supplement");
+const { singleUpload } = require("../middlewares/multer");
+const { getDataUri } = require("../utils/features");
+const cloudinary = require("cloudinary").v2; // Add this line
 
-router.post("/", verifyToken, async (req, res) => {
+router.post("/", verifyToken, singleUpload, async (req, res) => {
   const newSupplement = new Supplement(req.body);
   try {
+    // Check if a file was uploaded
+    if (req.file) {
+      const file = getDataUri(req.file);
+
+      // Upload the image to Cloudinary
+      const result = await cloudinary.uploader.upload(file.content);
+
+      // Add the image URL to the new supplement object
+      newSupplement.productImg = {
+        public_id: result.public_id,
+        secure_url: result.secure_url,
+      };
+    }
+
+    // Save the supplement to the database
     const savedSupplement = await newSupplement.save();
     res.status(200).json(savedSupplement);
   } catch (err) {
