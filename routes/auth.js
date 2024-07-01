@@ -19,8 +19,12 @@ router.post("/phone-login", async (req, res) => {
   try {
     // Find or create user by phone number
     let user = await User.findOne({ phoneNumber: phone });
+
     if (!user) {
-      user = new User({ phoneNumber: phone });
+      const newUser = { phoneNumber: phone, email: `${phone}@gmail.com` };
+
+      // Create the new user without email if it's null
+      user = new User(newUser);
       await user.save();
     }
 
@@ -29,10 +33,12 @@ router.post("/phone-login", async (req, res) => {
       .services(verifyServiceSid)
       .verifications.create({ to: phone, channel: "sms" });
 
+    console.log(verification.status);
+
     console.log(`Sent verification: '${verification.sid}'`);
     res.status(200).send({ success: true, message: "OTP sent to your phone." });
   } catch (error) {
-    res.status(500).send({ success: false, error: error.message });
+    res.status(500).send({ success: false, error: error });
   }
 });
 

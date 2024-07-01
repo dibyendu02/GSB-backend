@@ -14,8 +14,7 @@ const UserSchema = new mongoose.Schema(
     goalWeight: { type: String },
     goalHeight: { type: String },
     address: { type: String },
-    email: { type: String, unique: true },
-
+    email: { type: String },
     goal: { type: String },
     isAdmin: {
       type: Boolean,
