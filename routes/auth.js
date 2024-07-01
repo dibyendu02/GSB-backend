@@ -25,7 +25,7 @@ router.post("/phone-login", async (req, res) => {
     }
 
     // Send OTP to the user's phone using Twilio Verify
-    const verification = await twilioClient.verify
+    const verification = await twilioClient.verify.v2 // .services(verifyServiceSid)
       .services(verifyServiceSid)
       .verifications.create({ to: phone, channel: "sms" });
 
