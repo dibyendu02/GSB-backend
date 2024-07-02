@@ -38,7 +38,7 @@ router.get("/:userId", verifyToken, async (req, res) => {
 });
 
 // Route to update a story by ID
-router.put("/:id", verifyTokenandAdmin, async (req, res) => {
+router.put("/:id", verifyToken, async (req, res) => {
   try {
     const updatedOrder = await Order.findByIdAndUpdate(
       req.params.id,
