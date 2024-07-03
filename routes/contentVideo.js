@@ -55,8 +55,24 @@ router.get("/", verifyToken, async (req, res) => {
   }
 });
 
+//Route to edit a video by ID
+router.put("/:id", verifyToken, async (req, res) => {
+  try {
+    const updatedContentVideo = await ContentVideo.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedContentVideo);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // Route to delete a video by ID
-router.delete("/:id", verifyTokenandAdmin, async (req, res) => {
+router.delete("/:id", verifyToken, async (req, res) => {
   try {
     await ContentVideo.findByIdAndDelete(req.params.id);
     res.status(200).json("Video content has been deleted...");

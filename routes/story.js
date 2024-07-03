@@ -68,7 +68,7 @@ router.get("/:userId", verifyToken, async (req, res) => {
 });
 
 // Route to update a story by ID
-router.put("/:id", verifyTokenandAdmin, async (req, res) => {
+router.put("/:id", verifyToken, async (req, res) => {
   try {
     const updatedStory = await Story.findByIdAndUpdate(
       req.params.id,
@@ -84,7 +84,7 @@ router.put("/:id", verifyTokenandAdmin, async (req, res) => {
 });
 
 // Route to delete a story by ID
-router.delete("/:id", verifyTokenandAdmin, async (req, res) => {
+router.delete("/:id", verifyToken, async (req, res) => {
   try {
     await Story.findByIdAndDelete(req.params.id);
     res.status(200).json("Story has been deleted...");

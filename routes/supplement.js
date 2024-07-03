@@ -45,7 +45,8 @@ router.get("/", verifyToken, async (req, res) => {
 });
 
 // Route to update a supplement by ID
-router.put("/:id", verifyTokenandAdmin, async (req, res) => {
+router.put("/:id", verifyToken, singleUpload, async (req, res) => {
+  console.log(req.body);
   try {
     const updatedSupplement = await Supplement.findByIdAndUpdate(
       req.params.id,
@@ -61,7 +62,7 @@ router.put("/:id", verifyTokenandAdmin, async (req, res) => {
 });
 
 // Route to delete a supplement by ID
-router.delete("/:id", verifyTokenandAdmin, async (req, res) => {
+router.delete("/:id", verifyToken, async (req, res) => {
   try {
     await Supplement.findByIdAndDelete(req.params.id);
     res.status(200).json("Supplement has been deleted...");

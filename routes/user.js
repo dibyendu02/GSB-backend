@@ -51,7 +51,7 @@ router.post(
 );
 
 // Update User Profile
-router.put("/:id", verifyTokenandAuthorization, async (req, res) => {
+router.put("/:id", verifyToken, async (req, res) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
@@ -68,7 +68,7 @@ router.put("/:id", verifyTokenandAuthorization, async (req, res) => {
 });
 
 // Delete User
-router.delete("/:id", verifyTokenandAuthorization, async (req, res) => {
+router.delete("/:id", verifyToken, async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.status(200).json("Account deleted successfully...");
@@ -78,7 +78,7 @@ router.delete("/:id", verifyTokenandAuthorization, async (req, res) => {
 });
 
 // Get User
-router.get("/find/:id", verifyTokenandAuthorization, async (req, res) => {
+router.get("/find/:id", verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) {
