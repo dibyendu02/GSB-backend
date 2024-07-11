@@ -51,9 +51,22 @@ router.get("/", verifyToken, async (req, res) => {
     const contentVideos = await ContentVideo.find();
     res.status(200).json(contentVideos);
   } catch (err) {
+    console.log("error is ");
     res.status(500).json(err);
   }
 });
+// router.get("/", verifyToken, async (req, res) => {
+//   try {
+//     const contentVideos = await ContentVideo.find();
+//     console.log("all fine");
+//     res.status(200).json(contentVideos);
+//   } catch (err) {
+//     console.log(err);
+//     if (!res.headersSent) {
+//       res.status(500).json(err);
+//     }
+//   }
+// });
 
 //Route to edit a video by ID
 router.put("/:id", verifyToken, async (req, res) => {

@@ -42,10 +42,10 @@ router.post(
       };
 
       const updatedUser = await user.save();
-      res.status(200).json(updatedUser);
+      return res.status(200).json(updatedUser);
     } catch (err) {
       console.error("Error during profile image upload:", err); // Additional logging
-      res.status(500).json({ message: "Server error", error: err });
+      return res.status(500).json({ message: "Server error", error: err });
     }
   }
 );
@@ -61,9 +61,9 @@ router.put("/:id", verifyToken, async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json(updatedUser);
+    return res.status(200).json(updatedUser);
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 });
 
@@ -71,9 +71,9 @@ router.put("/:id", verifyToken, async (req, res) => {
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
-    res.status(200).json("Account deleted successfully...");
+    return res.status(200).json("Account deleted successfully...");
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 });
 
@@ -84,9 +84,9 @@ router.get("/find/:id", verifyToken, async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json(user);
+    return res.status(200).json(user);
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 });
 
@@ -94,9 +94,9 @@ router.get("/find/:id", verifyToken, async (req, res) => {
 router.get("/", verifyToken, async (req, res) => {
   try {
     const users = await User.find();
-    res.status(200).json(users);
+    return res.status(200).json(users);
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 });
 

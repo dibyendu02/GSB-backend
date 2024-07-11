@@ -16,6 +16,7 @@ const UserSchema = new mongoose.Schema(
     address: { type: String },
     email: { type: String },
     goal: { type: String },
+    zone: { type: String, default: "blue" },
     isAdmin: {
       type: Boolean,
       default: false,
