@@ -5,25 +5,31 @@ const {
   verifyTokenandAdmin,
 } = require("../middlewares/verifyToken");
 const Supplement = require("../models/Supplement");
-const { singleUpload } = require("../middlewares/multer");
+const { singleUpload, multipleUpload } = require("../middlewares/multer");
 const { getDataUri } = require("../utils/features");
-const cloudinary = require("cloudinary").v2; // Add this line
+const cloudinary = require("cloudinary").v2; // Ensure cloudinary is configured
 
-router.post("/", verifyToken, singleUpload, async (req, res) => {
-  const newSupplement = new Supplement(req.body);
+// Route to create a new supplement with multiple images
+router.post("/", verifyToken, multipleUpload, async (req, res) => {
+  const { name, price, description } = req.body;
+  const newSupplement = new Supplement({ name, price, description });
+
   try {
-    // Check if a file was uploaded
-    if (req.file) {
-      const file = getDataUri(req.file);
+    // Check if files were uploaded
+    if (req.files) {
+      newSupplement.productImgs = []; // Initialize the array for product images
 
-      // Upload the image to Cloudinary
-      const result = await cloudinary.uploader.upload(file.content);
+      // Loop through the files and upload each one to Cloudinary
+      for (const file of req.files) {
+        const fileUri = getDataUri(file);
+        const result = await cloudinary.uploader.upload(fileUri.content);
 
-      // Add the image URL to the new supplement object
-      newSupplement.productImg = {
-        public_id: result.public_id,
-        secure_url: result.secure_url,
-      };
+        // Add the image URL to the new supplement object
+        newSupplement.productImgs.push({
+          public_id: result.public_id,
+          secure_url: result.secure_url,
+        });
+      }
     }
 
     // Save the supplement to the database
@@ -45,16 +51,36 @@ router.get("/", verifyToken, async (req, res) => {
 });
 
 // Route to update a supplement by ID
-router.put("/:id", verifyToken, singleUpload, async (req, res) => {
-  console.log(req.body);
+router.put("/:id", verifyToken, multipleUpload, async (req, res) => {
+  const { name, price, description } = req.body;
+  let updatedFields = { name, price, description };
+
   try {
+    // Check if files were uploaded
+    if (req.files && req.files.length > 0) {
+      updatedFields.productImgs = []; // Initialize the array for new product images
+
+      // Loop through the files and upload each one to Cloudinary
+      for (const file of req.files) {
+        const fileUri = getDataUri(file);
+        const result = await cloudinary.uploader.upload(fileUri.content);
+
+        // Add the image URL to the updated fields
+        updatedFields.productImgs.push({
+          public_id: result.public_id,
+          secure_url: result.secure_url,
+        });
+      }
+    }
+
     const updatedSupplement = await Supplement.findByIdAndUpdate(
       req.params.id,
       {
-        $set: req.body,
+        $set: updatedFields,
       },
       { new: true }
     );
+
     res.status(200).json(updatedSupplement);
   } catch (err) {
     res.status(500).json(err);
