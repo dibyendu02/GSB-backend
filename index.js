@@ -14,6 +14,7 @@ const cartRoute = require("./routes/cart");
 const contentVideoRoute = require("./routes/contentVideo");
 const dietPdfRoute = require("./routes/dietPdf");
 const updateRoute = require("./routes/update");
+const ytContentVideoRoutes = require("./routes/ytContentVideo");
 
 const cloudinary = require("cloudinary");
 
@@ -52,6 +53,7 @@ app.use("/api/cart", cartRoute);
 app.use("/api/contentVideo", contentVideoRoute);
 app.use("/api/dietPdf", dietPdfRoute);
 app.use("/api/update", updateRoute);
+app.use("/api/ytContentVideo", ytContentVideoRoutes);
 
 app.listen(PORT, () => {
   console.log(`app running on port ${PORT}`);
