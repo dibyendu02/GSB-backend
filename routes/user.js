@@ -100,4 +100,39 @@ router.get("/", verifyToken, async (req, res) => {
   }
 });
 
+// Route to add a subscription to a user
+router.post("/add-subscription", verifyToken, async (req, res) => {
+  const { userId, durationInMonths } = req.body;
+
+  // Function to add a subscription with a specified duration
+  const addSubscription = async (userId, durationInMonths) => {
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      const currentDate = moment();
+      const newEndDate = currentDate.add(durationInMonths, "months").toDate();
+
+      user.subscriptionStartDate = currentDate.toDate();
+      user.subscriptionEndDate = newEndDate;
+      user.subscriptionStatus = true;
+
+      await user.save();
+      return user;
+    } catch (error) {
+      console.error("Error adding subscription:", error);
+      throw error;
+    }
+  };
+
+  try {
+    const updatedUser = await addSubscription(userId, durationInMonths);
+    return res.status(200).json(updatedUser);
+  } catch (err) {
+    return res.status(500).json(err.message);
+  }
+});
+
 module.exports = router;
