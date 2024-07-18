@@ -50,6 +50,17 @@ router.get("/", verifyToken, async (req, res) => {
   }
 });
 
+// Route to get a supplement
+router.get("/:id", verifyToken, async (req, res) => {
+  const { productId } = req.params;
+  try {
+    const supplements = await Supplement.find({ _id: productId });
+    res.status(200).json(supplements);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // Route to update a supplement by ID
 router.put("/:id", verifyToken, multipleUpload, async (req, res) => {
   const { name, price, description } = req.body;

@@ -15,7 +15,11 @@ const contentVideoRoute = require("./routes/contentVideo");
 const dietPdfRoute = require("./routes/dietPdf");
 const updateRoute = require("./routes/update");
 const ytContentVideoRoutes = require("./routes/ytContentVideo");
+const subscriberVideoRoutes = require("./routes/subscriberVideo");
 const serviceQuestionsRoutes = require("./routes/serviceQuestions");
+const depressionQuestionsRoutes = require("./routes/depressionQuestions");
+const IBSquestionsRoutes = require("./routes/IBSquestions");
+const DiabetesQuestionRoutes = require("./routes/diabetesQuestions");
 
 const cloudinary = require("cloudinary");
 
@@ -56,6 +60,10 @@ app.use("/api/dietPdf", dietPdfRoute);
 app.use("/api/update", updateRoute);
 app.use("/api/ytContentVideo", ytContentVideoRoutes);
 app.use("/api/serviceQuestions", serviceQuestionsRoutes);
+app.use("/api/subscriberVideo", subscriberVideoRoutes);
+app.use("/api/depressionQuestions", depressionQuestionsRoutes);
+app.use("/api/IBSquestions", IBSquestionsRoutes);
+app.use("/api/diabetesQuestion", DiabetesQuestionRoutes);
 
 app.listen(PORT, () => {
   console.log(`app running on port ${PORT}`);
