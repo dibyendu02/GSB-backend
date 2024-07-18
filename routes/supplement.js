@@ -52,10 +52,10 @@ router.get("/", verifyToken, async (req, res) => {
 
 // Route to get a supplement
 router.get("/:id", verifyToken, async (req, res) => {
-  const { productId } = req.params;
+  const { id } = req.params; // Corrected from productId to id
   try {
-    const supplements = await Supplement.find({ _id: productId });
-    res.status(200).json(supplements);
+    const supplement = await Supplement.findById(id);
+    res.status(200).json(supplement);
   } catch (err) {
     res.status(500).json(err);
   }
